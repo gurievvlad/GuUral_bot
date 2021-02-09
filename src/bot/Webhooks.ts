@@ -7,10 +7,20 @@ class Webhooks {
     return JSON.parse(request);
   }
 
+  private static getCommand(messageText: string): string {
+    let command: string;
+    try {
+      command = messageText.split('/')[1].split('@')[0];
+    } catch {
+      command = '';
+    }
+    return command;
+  }
+
   public async determinant(body: Update): Promise<void> {
     if (!body.callback_query) {
       if (!body.message || !body.message.text) return;
-      const command: string = body.message.text.split('/')[1].split('@')[0] || '';
+      const command: string = Webhooks.getCommand(body.message.text);
       switch (command) {
         case 'start':
           await Bot.channel.authorization(body.message.chat.id);
