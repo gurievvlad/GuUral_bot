@@ -24,8 +24,8 @@ class ScheduleServices {
   timeGen(time: string): TTimes {
     const split: string[] = time.split(' — ', 2);
     return {
-      timeStart: split[0] ? split[0].replace('.', ':') : '00:00',
-      timeEnd: split[1] ? split[1].replace('.', ':') : '00:00',
+      timeStart: split[0] ? split[0].replace('.', ':') : '',
+      timeEnd: split[1] ? split[1].replace('.', ':') : '',
     };
   }
 

@@ -11,7 +11,7 @@ async function genResponse(request: ScheduleRequestQuery): Promise<Error | Sched
   const { form, speciality, course, group, normalize }: ScheduleRequestQuery = request;
   if (!form || !speciality || !course || !group) {
     return Promise.reject({
-      message: 'Form, specialty, course and group required parameters',
+      message: 'Form, speciality, course and group required parameters',
       code: 400,
     });
   }

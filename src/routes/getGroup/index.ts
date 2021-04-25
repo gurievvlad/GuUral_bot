@@ -9,7 +9,7 @@ async function genResponse(request: GetGroupRequestQuery): Promise<Error | { id:
   const { form, speciality, course }: GetGroupRequestQuery = request;
   if (!form || !speciality || !course) {
     return Promise.reject({
-      message: 'Form, specialty and course required parameters',
+      message: 'Form, speciality and course required parameters',
       code: 400,
     });
   }

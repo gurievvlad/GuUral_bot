@@ -8,66 +8,55 @@ type TYesterdaySchedule = {
 };
 
 const TODAY: Date = new Date();
-const TOMORROW: Date = new Date(TODAY);
+const TOMORROW: Date = new Date();
 TOMORROW.setDate(TOMORROW.getDate() + 1);
 
 class SendSchedule {
   localDate(date: Date): string {
-    return date.toLocaleDateString('ru').replace('/', '.').replace('/', '.');
+    return date.toLocaleDateString('ru').replace(/\//g, '.');
   }
 
   generateLessons(dayLessons: NormalSchedule[]): string {
-    let textLesson = '';
-    dayLessons.forEach(item => {
+    return dayLessons.reduce((textLesson, item) => {
       textLesson += `${item.timeStart}`;
       textLesson += ` ${item.discipline}`;
       if (item.classroom) textLesson += ` | ${item.classroom}`;
       if (item.type) textLesson += ` | ${item.type}`;
       if (item.notes) textLesson += ` | ${item.notes}`;
       textLesson += `\n`;
-    });
-    return textLesson;
+      return textLesson;
+    }, '');
   }
 
   generateYesterdayText(schedule: NormalSchedule[]): string {
     const a: TYesterdaySchedule = {
-      today: [],
-      tomorrow: [],
+      today: schedule.filter(lesson => lesson.date === this.localDate(TODAY)),
+      tomorrow: schedule.filter(lesson => lesson.date === this.localDate(TOMORROW)),
     };
-    schedule.forEach(lesson => {
-      switch (lesson.date) {
-        case this.localDate(TODAY):
-          a.today.push(lesson);
-          break;
-        case this.localDate(TOMORROW):
-          a.tomorrow.push(lesson);
-          break;
-        default:
-          return;
-      }
-    });
 
     let text = '';
-    if (a.today.length) {
-      text += 'Сегодня:\n';
-      text += this.generateLessons(a.today);
-    }
+    if (a.today.length) text += `Сегодня:\n${this.generateLessons(a.today)}`;
     if (a.today.length && a.tomorrow.length) text += '\n';
-    if (a.tomorrow.length) {
-      text += 'Завтра:\n';
-      text += this.generateLessons(a.tomorrow);
-    }
-
+    if (a.tomorrow.length) text += `Завтра:\n${this.generateLessons(a.tomorrow)}`;
     return text;
   }
 
   async sendYesterdayMessage(id: number): Promise<void> {
     const schedule = await services.schedule.getNormalById(id);
-    if (!schedule.length) return;
-    await Api.bot.sendMessage({
-      chat_id: id,
-      text: this.generateYesterdayText(schedule),
-    });
+    if (!schedule.length) return Promise.reject(new Error('Нет расписания'));
+    const text = this.generateYesterdayText(schedule);
+    if (!text) return Promise.reject(new Error('Не сгенерировался текст'));
+    await Api.bot
+      .sendMessage({
+        chat_id: id,
+        text,
+      })
+      .then(() => {
+        return Promise.resolve();
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      });
   }
 }
 

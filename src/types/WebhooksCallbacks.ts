@@ -9,3 +9,5 @@ export default class WebhooksCallbacks {
   type!: string;
   data!: WebhookCallbackData;
 }
+
+export type BotCommands = ['start', 'out'];

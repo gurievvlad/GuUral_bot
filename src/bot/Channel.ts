@@ -50,7 +50,7 @@ class Channel {
       });
   }
 
-  private callbackDataGen(question: string, answer: string): string {
+  private static callbackDataGen(question: string, answer: string): string {
     return JSON.stringify({
       type: 'auth',
       data: {
@@ -82,17 +82,17 @@ class Channel {
 
     if (!chatData.form && !chatData.speciality && !chatData.course && !chatData.group) {
       await send('Привет! Для начала мне нужно узнать твою группу. Какая у тебя форма обучения?', [
-        [{ text: 'Очная', callback_data: this.callbackDataGen('form', '1') }],
-        [{ text: 'Заочная', callback_data: this.callbackDataGen('form', '2') }],
-        [{ text: 'Очно-заочная', callback_data: this.callbackDataGen('form', '3') }],
+        [{ text: 'Очная', callback_data: Channel.callbackDataGen('form', '1') }],
+        [{ text: 'Заочная', callback_data: Channel.callbackDataGen('form', '2') }],
+        [{ text: 'Очно-заочная', callback_data: Channel.callbackDataGen('form', '3') }],
       ]);
       return;
     }
     if (!chatData.stage) {
       await send('Ступень обучения', [
-        [{ text: 'Бакалавриат', callback_data: this.callbackDataGen('stage', '1') }],
-        [{ text: 'Магистратура', callback_data: this.callbackDataGen('stage', '2') }],
-        [{ text: 'Аспирантура', callback_data: this.callbackDataGen('stage', '3') }],
+        [{ text: 'Бакалавриат', callback_data: Channel.callbackDataGen('stage', '1') }],
+        [{ text: 'Магистратура', callback_data: Channel.callbackDataGen('stage', '2') }],
+        [{ text: 'Аспирантура', callback_data: Channel.callbackDataGen('stage', '3') }],
       ]);
       return;
     }
@@ -100,46 +100,46 @@ class Channel {
       switch (chatData.stage) {
         case '1':
           await send('Направление подготовки', [
-            [{ text: 'Гостиничное дело', callback_data: this.callbackDataGen('speciality', '11') }],
-            [{ text: 'Журналистика', callback_data: this.callbackDataGen('speciality', '10') }],
+            [{ text: 'Гостиничное дело', callback_data: Channel.callbackDataGen('speciality', '11') }],
+            [{ text: 'Журналистика', callback_data: Channel.callbackDataGen('speciality', '10') }],
             [
               {
                 text: 'Конструирование изделий легкой промышленности',
-                callback_data: this.callbackDataGen('speciality', '5'),
+                callback_data: Channel.callbackDataGen('speciality', '5'),
               },
             ],
-            [{ text: 'Менеджмент', callback_data: this.callbackDataGen('speciality', '3') }],
-            [{ text: 'Прикладная информатика', callback_data: this.callbackDataGen('speciality', '4') }],
-            [{ text: 'Психология', callback_data: this.callbackDataGen('speciality', '12') }],
-            [{ text: 'Реклама и связи с общественностью', callback_data: this.callbackDataGen('speciality', '6') }],
-            [{ text: 'Сервис', callback_data: this.callbackDataGen('speciality', '7') }],
-            [{ text: 'Управление персоналом', callback_data: this.callbackDataGen('speciality', '9') }],
-            [{ text: 'Хореографическое искусство', callback_data: this.callbackDataGen('speciality', '8') }],
-            [{ text: 'Экономика', callback_data: this.callbackDataGen('speciality', '2') }],
-            [{ text: 'Юриспруденция', callback_data: this.callbackDataGen('speciality', '1') }],
+            [{ text: 'Менеджмент', callback_data: Channel.callbackDataGen('speciality', '3') }],
+            [{ text: 'Прикладная информатика', callback_data: Channel.callbackDataGen('speciality', '4') }],
+            [{ text: 'Психология', callback_data: Channel.callbackDataGen('speciality', '12') }],
+            [{ text: 'Реклама и связи с общественностью', callback_data: Channel.callbackDataGen('speciality', '6') }],
+            [{ text: 'Сервис', callback_data: Channel.callbackDataGen('speciality', '7') }],
+            [{ text: 'Управление персоналом', callback_data: Channel.callbackDataGen('speciality', '9') }],
+            [{ text: 'Хореографическое искусство', callback_data: Channel.callbackDataGen('speciality', '8') }],
+            [{ text: 'Экономика', callback_data: Channel.callbackDataGen('speciality', '2') }],
+            [{ text: 'Юриспруденция', callback_data: Channel.callbackDataGen('speciality', '1') }],
           ]);
           break;
         case '2':
           await send('Направление подготовки', [
-            [{ text: 'Психология', callback_data: this.callbackDataGen('speciality', '15') }],
-            [{ text: 'Экономика', callback_data: this.callbackDataGen('speciality', '14') }],
-            [{ text: 'Юриспруденция', callback_data: this.callbackDataGen('speciality', '16') }],
+            [{ text: 'Психология', callback_data: Channel.callbackDataGen('speciality', '15') }],
+            [{ text: 'Экономика', callback_data: Channel.callbackDataGen('speciality', '14') }],
+            [{ text: 'Юриспруденция', callback_data: Channel.callbackDataGen('speciality', '16') }],
           ]);
           break;
         case '3':
           await send('Направление подготовки', [
-            [{ text: 'Культурология', callback_data: this.callbackDataGen('speciality', '22') }],
+            [{ text: 'Культурология', callback_data: Channel.callbackDataGen('speciality', '22') }],
             [
               {
                 text: 'Политические науки и регионоведение',
-                callback_data: this.callbackDataGen('speciality', '20'),
+                callback_data: Channel.callbackDataGen('speciality', '20'),
               },
             ],
-            [{ text: 'Психологические науки', callback_data: this.callbackDataGen('speciality', '17') }],
-            [{ text: 'Социологические науки', callback_data: this.callbackDataGen('speciality', '19') }],
-            [{ text: 'Философия, этика и религиоведение', callback_data: this.callbackDataGen('speciality', '21') }],
-            [{ text: 'Экономика', callback_data: this.callbackDataGen('speciality', '18') }],
-            [{ text: 'Юриспруденция', callback_data: this.callbackDataGen('speciality', '23') }],
+            [{ text: 'Психологические науки', callback_data: Channel.callbackDataGen('speciality', '17') }],
+            [{ text: 'Социологические науки', callback_data: Channel.callbackDataGen('speciality', '19') }],
+            [{ text: 'Философия, этика и религиоведение', callback_data: Channel.callbackDataGen('speciality', '21') }],
+            [{ text: 'Экономика', callback_data: Channel.callbackDataGen('speciality', '18') }],
+            [{ text: 'Юриспруденция', callback_data: Channel.callbackDataGen('speciality', '23') }],
           ]);
           break;
       }
@@ -148,11 +148,11 @@ class Channel {
     if (!chatData.course) {
       await send('Курс', [
         [
-          { text: '1', callback_data: this.callbackDataGen('course', '1') },
-          { text: '2', callback_data: this.callbackDataGen('course', '2') },
-          { text: '3', callback_data: this.callbackDataGen('course', '3') },
-          { text: '4', callback_data: this.callbackDataGen('course', '4') },
-          { text: '5', callback_data: this.callbackDataGen('course', '5') },
+          { text: '1', callback_data: Channel.callbackDataGen('course', '1') },
+          { text: '2', callback_data: Channel.callbackDataGen('course', '2') },
+          { text: '3', callback_data: Channel.callbackDataGen('course', '3') },
+          { text: '4', callback_data: Channel.callbackDataGen('course', '4') },
+          { text: '5', callback_data: Channel.callbackDataGen('course', '5') },
         ],
       ]);
       return;
@@ -170,8 +170,8 @@ class Channel {
         case 1: {
           await send(`Ваша группа ${groups[0].name}`, [
             [
-              { text: 'ДА', callback_data: this.callbackDataGen('group', groups[0].id) },
-              { text: 'Нет', callback_data: this.callbackDataGen('exit', '') },
+              { text: 'ДА', callback_data: Channel.callbackDataGen('group', groups[0].id) },
+              { text: 'Нет', callback_data: Channel.callbackDataGen('exit', '') },
             ],
           ]);
           break;
@@ -180,7 +180,7 @@ class Channel {
           const reply = groups.map(item => [
             {
               text: item.name,
-              callback_data: this.callbackDataGen('group', item.id),
+              callback_data: Channel.callbackDataGen('group', item.id),
             },
           ]);
           await send('Последний шаг! Выберите вашу группу', reply);
