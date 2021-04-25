@@ -1,6 +1,6 @@
 import Api from '../api';
 import NormalSchedule from '../types/NormalSheduleInterface';
-import services from '../services';
+import Services from '../services';
 
 type TYesterdaySchedule = {
   today: NormalSchedule[];
@@ -18,13 +18,8 @@ class SendSchedule {
 
   generateLessons(dayLessons: NormalSchedule[]): string {
     return dayLessons.reduce((textLesson, item) => {
-      textLesson += `${item.timeStart}`;
-      textLesson += ` ${item.discipline}`;
-      if (item.classroom) textLesson += ` | ${item.classroom}`;
-      if (item.type) textLesson += ` | ${item.type}`;
-      if (item.notes) textLesson += ` | ${item.notes}`;
-      textLesson += `\n`;
-      return textLesson;
+      const { timeStart = '', discipline = '', classroom = '', type = '', notes = '' } = item;
+      return `${textLesson}${timeStart} ${discipline}${classroom && ` | ${classroom}`}${type && ` | ${type}`}${notes && ` | ${notes}`}\n`;
     }, '');
   }
 
@@ -41,8 +36,8 @@ class SendSchedule {
     return text;
   }
 
-  async sendYesterdayMessage(id: number): Promise<void> {
-    const schedule = await services.schedule.getNormalById(id);
+  async sendYesterdayMessage(id: number): Promise<any> {
+    const schedule = await Services.schedule.getNormalById(id);
     if (!schedule.length) return Promise.reject(new Error('Нет расписания'));
     const text = this.generateYesterdayText(schedule);
     if (!text) return Promise.reject(new Error('Не сгенерировался текст'));

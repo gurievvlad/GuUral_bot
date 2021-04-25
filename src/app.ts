@@ -46,6 +46,7 @@ greenlookExpress
 schedule.scheduleJob('0 6 * * *', () => {
   Recipient.findAll().then((items: Recipient[]): void => {
     items.forEach((item): void => {
+      if (!item.id) return;
       Bot.sendSchedule.sendYesterdayMessage(item.id).catch(err => {
         console.log(err);
       });
