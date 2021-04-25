@@ -5,7 +5,6 @@ import schedule from 'node-schedule';
 import bodyParser from 'body-parser';
 import Bot from './bot';
 import { Recipient } from './database/models/recipient';
-import greenlookExpress from 'greenlock-express';
 
 // load the environment variables from the .env file
 dotenv.config({
@@ -27,29 +26,23 @@ server.app.use(
 server.app.use(bodyParser.json());
 routes(server.app);
 
-greenlookExpress
-  .init({
-    packageRoot: process.env.GREENLOCK_PACKAGE_ROOT,
-
-    // contact for security and critical bug notices
-    maintainerEmail: process.env.GREENLOCK_MAINTAINER_EMAIL,
-
-    // where to look for configuration
-    configDir: process.env.GREENLOCK_CONFIG_DIR,
-
-    // whether or not to run at cloudscale
-    cluster: false,
-  })
-  .serve(server.app);
+server.app.listen(process.env.APP_PORT, () => {
+  console.log('Listen on port', process.env.APP_PORT);
+});
 
 // Setup job schedule
 schedule.scheduleJob('0 6 * * *', () => {
   Recipient.findAll().then((items: Recipient[]): void => {
     items.forEach((item): void => {
       if (!item.id) return;
-      Bot.sendSchedule.sendYesterdayMessage(item.id).catch(err => {
-        console.log(err);
-      });
+      Bot.sendSchedule
+        .sendYesterdayMessage(item.id)
+        .then(message => {
+          console.log(message);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     });
   });
 });

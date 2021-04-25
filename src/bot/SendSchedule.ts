@@ -38,16 +38,16 @@ class SendSchedule {
 
   async sendYesterdayMessage(id: number): Promise<any> {
     const schedule = await Services.schedule.getNormalById(id);
-    if (!schedule.length) return Promise.reject(new Error('Нет расписания'));
+    if (!schedule.length) return Promise.reject('Нет расписания');
     const text = this.generateYesterdayText(schedule);
-    if (!text) return Promise.reject(new Error('Не сгенерировался текст'));
+    if (!text) return Promise.reject('Не сгенерировался текст');
     await Api.bot
       .sendMessage({
         chat_id: id,
         text,
       })
       .then(() => {
-        return Promise.resolve();
+        return Promise.resolve(`Chat ${id} — schedule send`);
       })
       .catch(err => {
         return Promise.reject(err);

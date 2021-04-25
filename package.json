@@ -4,7 +4,7 @@
   "description": "Телеграм бот и открытое апи для получения расписания с сайта gu-ural",
   "main": "src/app.ts",
   "scripts": {
-    "start": "ts-node src/app.ts",
+    "start": "ts-node src/app.ts > log.log 2> error.log",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --quiet",
     "lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
