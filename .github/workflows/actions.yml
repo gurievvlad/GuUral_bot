@@ -18,8 +18,8 @@ jobs:
     environment: prod
     needs: lint
     steps:
-      - run: npm install
       - uses: actions/checkout@v2
+      - run: npm install
       - name: Deploy
         uses: burnett01/rsync-deployments@5.1
         with:
