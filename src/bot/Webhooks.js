@@ -1,17 +1,14 @@
-import Bot from './index';
-import { Update } from 'node-telegram-bot-api';
-import WebhooksCallbacks from '../types/WebhooksCallbacks';
-import { BotCommands } from '../types/WebhooksCallbacks';
+import Bot from './index.js';
 
 class Webhooks {
-  private static getCommand(messageText: string) {
-    const commands: BotCommands = ['start', 'out'];
+  static getCommand(messageText) {
+    const commands = ['start', 'out'];
     return commands.find(command => messageText.search(command) > -1);
   }
 
-  public async determinant(body: Update): Promise<void> {
+  async determinant(body) {
     if (!body.callback_query) {
-      if (!body?.message?.text) return;
+      if (!body || !body.message || !body.message.text) return;
       switch (Webhooks.getCommand(body.message.text)) {
         case 'start':
           await Bot.channel.authorization(body.message.chat.id);
@@ -22,8 +19,8 @@ class Webhooks {
       }
     }
 
-    if (!body?.callback_query?.message) return;
-    const obj: WebhooksCallbacks = JSON.parse(<string>body.callback_query.data);
+    if (!body.callback_query || !body.callback_query.message) return;
+    const obj = JSON.parse(body.callback_query.data);
     const { type = undefined, data = undefined } = obj;
 
     if (!type || !data) return;

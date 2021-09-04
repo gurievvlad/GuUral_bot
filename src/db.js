@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
-
-import { development, production } from './database/config/config';
+import dotenv from 'dotenv';
+import { production, development } from './database/config/config.cjs';
+dotenv.config();
 
 const sequelize = new Sequelize(process.env.NODE_ENV === 'production' ? production : development);
 
@@ -10,7 +11,7 @@ sequelize
     console.log('Database connected!');
   })
   .catch(error => {
-    console.error('Database connection error: ' + error);
+    console.log('Database connection error: ' + error);
   });
 
 export default sequelize;

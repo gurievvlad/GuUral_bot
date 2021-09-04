@@ -1,5 +1,5 @@
-import University from './University';
-import Bot from './Bot';
+import University from './University.js';
+import Bot from './Bot.js';
 
 export default {
   university: new University(),
