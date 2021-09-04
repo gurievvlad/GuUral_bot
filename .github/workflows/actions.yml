@@ -10,6 +10,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
+
       - run: npm install
       - run: npm run lint
   deploy:
@@ -17,13 +18,14 @@ jobs:
     environment: prod
     needs: lint
     steps:
+      - run: npm install
       - uses: actions/checkout@v2
       - name: Deploy
         uses: burnett01/rsync-deployments@5.1
         with:
-          switches: -avzr --delete
+          switches: -avzr --delete --exclude=".env"
           path: /
-          remote_path: /home/c15464/guural.ru/app
-          remote_host: h14.netangels.ru
-          remote_user: c15464
+          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_host: ${{ secrets.DEPLOY_HOST }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
