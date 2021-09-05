@@ -11,16 +11,15 @@ class SendSchedule {
   }
 
   generateLessons(dayLessons) {
-    return dayLessons.reduce((textLesson, item) => {
-      const { timeStart, discipline, classroom, type, notes } = item;
-      return (
+    return dayLessons.reduce(
+      (textLesson, item) =>
         textLesson +
-        `${timeStart} ${discipline}` +
-        `${classroom ? ` | ${classroom}` : ''}` +
-        `${type ? ` | ${type}` : ''}` +
-        `${notes ? ` | ${notes}` : ''}\n`
-      );
-    }, '');
+        ['timeStart', 'discipline', 'classroom', 'type', 'notes']
+          .map(val => item[val])
+          .filter(Boolean)
+          .join(' | '),
+      '',
+    );
   }
 
   generateYesterdayText(schedule) {

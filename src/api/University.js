@@ -18,7 +18,6 @@ export default class University extends Http {
       .post(`${this.guUrl}/admin-ajax.php`, data, {
         headers: data.getHeaders(),
       })
-      .then(resp => resp.data)
       .catch(err => {
         console.log(
           `У form ${form}, speciality ${speciality}, course ${course}, group ${group} произошла ошибка с получением расписания: ${err}`,
@@ -41,7 +40,6 @@ export default class University extends Http {
       .post(`${this.guUrl}/admin-ajax.php`, data, {
         headers: data.getHeaders(),
       })
-      .then(resp => resp.data)
       .catch(err => {
         console.log(`У form ${form}, speciality ${speciality}, course ${course} произошла ошибка с получением групп: ${err}`);
         return [];

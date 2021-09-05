@@ -27,7 +27,7 @@ server.listen(process.env.APP_PORT, () => {
 });
 
 // Setup job schedule
-schedule.scheduleJob('*/2 * * * *', () => {
+schedule.scheduleJob('6 * * * *', () => {
   Recipient.findAll().then(items => {
     items.forEach(async recipient => {
       await Bot.sendSchedule.sendYesterdayMessage(recipient);

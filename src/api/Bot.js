@@ -9,7 +9,7 @@ export default class Bot extends Http {
   async sendMessage(body) {
     return await this.api
       .post(`${this.botUrl}/sendMessage`, body)
-      .then(data => data.data.result)
+      .then(data => data.result)
       .catch(err => {
         console.log(`deleteMessage(${body}): произошла ошибка: ${err}`);
         return null;
@@ -19,7 +19,7 @@ export default class Bot extends Http {
   async deleteMessage(body) {
     return await this.api
       .post(`${this.botUrl}/deleteMessage`, body)
-      .then(data => data.data.result)
+      .then(data => data.result)
       .catch(err => {
         console.log(`deleteMessage(${body}): произошла ошибка: ${err}`);
         return null;

@@ -13,7 +13,7 @@ export default class Http {
 
     this.api.interceptors.response.use(response => {
       const { config, data } = response;
-      console.log(`${config.method}: ${config.url}`, data);
+      console.log(`${config.method}: ${config.url}`);
       return data;
     });
 

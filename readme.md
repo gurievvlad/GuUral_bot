@@ -39,13 +39,7 @@ cp .env.example .env # Создаст окружение
 # Заполните .env
 npx sequelize-cli db:migrate # Запустит миграции (создание в БД нужных таблиц и полей)
 npm start # Запуск приложения
-
-# Для настройки https на ноде
-npx greenlock init --config-dir greenlock.d --maintainer-email jon@example.com
-npx greenlock add --subject example.com --altnames example.com
 ```
-jon@example.com — ваш email  
-example.com — ваш домен
 
 ### **О порядке разработки**
 Если у вас есть какие-то замечания, дополнения или фиксы, 

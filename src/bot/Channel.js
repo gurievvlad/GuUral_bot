@@ -13,21 +13,18 @@ const callbackGen = question => (...args) => args.map(([text, data]) => [{ text,
 class Channel {
   async send(chat_id, chatData, text, reply) {
     const body = { chat_id, text };
-    if (reply.length) body.reply_markup = { inline_keyboard: reply };
+    if (reply && reply.length) body.reply_markup = { inline_keyboard: reply };
     const lastAuthMessageId = chatData.last_message_id;
-    const sendResp = lastAuthMessageId ? Api.bot.editMessage({ ...body, message_id: lastAuthMessageId }) : Api.bot.sendMessage(body);
-    sendResp
-      .then(resp => {
-        Recipient.findByPk(chat_id).then(async chat => {
-          if (!chat || !resp.message_id) return;
+    const sendResp = lastAuthMessageId
+      ? await Api.bot.editMessage({ ...body, message_id: lastAuthMessageId })
+      : await Api.bot.sendMessage(body);
 
-          chat.last_message_id = resp.message_id;
-          await chat.save();
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    Recipient.findByPk(chat_id).then(async chat => {
+      if (!chat || !sendResp.message_id) return;
+
+      chat.last_message_id = sendResp.message_id;
+      await chat.save();
+    });
   }
 
   async authorization(id) {
@@ -116,7 +113,6 @@ class Channel {
     recipient.group = '';
     recipient.stage = '';
     recipient.form = '';
-    recipient.last_message_id = 0;
     await recipient.save();
     await this.authorization(recipient.id);
   }
