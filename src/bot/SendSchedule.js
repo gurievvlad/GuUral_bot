@@ -11,29 +11,24 @@ class SendSchedule {
   }
 
   generateLessons(dayLessons) {
-    return dayLessons.reduce(
-      (textLesson, item) =>
-        textLesson +
-        ['timeStart', 'discipline', 'classroom', 'type', 'notes']
-          .map(val => item[val])
-          .filter(Boolean)
-          .join(' | '),
-      '',
-    );
+    const dayLessonsReducer = (textLesson, item) =>
+      `${textLesson}${['timeStart', 'discipline', 'classroom', 'type', 'notes']
+        .map(val => item[val])
+        .filter(item => !!item)
+        .join(' | ')}\n`;
+    return dayLessons.reduce(dayLessonsReducer, '');
   }
 
   generateYesterdayText(schedule) {
     const filterFromDate = date => lesson => lesson.date === this.localDate(date);
-    const a = {
-      today: schedule.filter(filterFromDate(TODAY)),
-      tomorrow: schedule.filter(filterFromDate(TOMORROW)),
-    };
+    const today = schedule.filter(filterFromDate(TODAY));
+    const tomorrow = schedule.filter(filterFromDate(TOMORROW));
 
-    return `
-      ${a.today.length ? `Сегодня:\n${this.generateLessons(a.today)}` : ''}
-      ${a.today.length && a.tomorrow.length ? '\n' : ''}
-      ${a.tomorrow.length ? `Завтра:\n${this.generateLessons(a.tomorrow)}` : ''}
-    `;
+    return (
+      (today.length ? `Сегодня:\n${this.generateLessons(today)}`.trim() : '') +
+      (today.length && tomorrow.length ? '\n\n' : '') +
+      (tomorrow.length ? `Завтра:\n${this.generateLessons(tomorrow)}`.trim() : '')
+    );
   }
 
   async sendYesterdayMessage(chat) {
