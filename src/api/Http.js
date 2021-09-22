@@ -8,7 +8,7 @@ export default class Http {
       headers: {
         'Content-Type': 'application/json',
       },
-      timeout: 2000,
+      timeout: 5000,
     });
 
     this.api.interceptors.response.use(response => {
